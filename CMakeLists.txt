@@ -17,6 +17,7 @@ if (NOT WIN32)
     set(PTHREAD_LIB pthread)
     set(LIBM m)
     set(LIBZ z)
+    set(LIBDL dl)
     set(LIBSNAPPY snappy)
     set(LIBBZ2 bz2)
     set(LIBFDB forestdb)
@@ -24,6 +25,7 @@ if (NOT WIN32)
     set(LIBRDB rocksdb)
     set(LIBCOUCH couchstore)
     set(LIBWT wiredtiger)
+    set(LIBTCM tcmalloc)
 endif(NOT WIN32)
 
 if ("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
@@ -44,7 +46,7 @@ add_executable(fdb_bench
                utils/zipfian_random.cc
                utils/keyloader.cc
                utils/keygen.cc)
-target_link_libraries(fdb_bench ${PTHREAD_LIB} ${LIBM} ${LIBSNAPPY} ${LIBFDB})
+target_link_libraries(fdb_bench ${LIBFDB} ${PTHREAD_LIB} ${LIBM} ${LIBSNAPPY} ${LIBTCM})
 set_target_properties(fdb_bench PROPERTIES COMPILE_FLAGS "-D__FDB_BENCH")
 file(COPY ${CMAKE_SOURCE_DIR}/bench_config.ini DESTINATION ./)
 
@@ -73,7 +75,7 @@ add_executable(leveldb_bench
                utils/zipfian_random.cc
                utils/keyloader.cc
                utils/keygen.cc)
-target_link_libraries(leveldb_bench ${PTHREAD_LIB} ${LIBM} ${LIBSNAPPY} ${LIBLDB})
+target_link_libraries(leveldb_bench ${PTHREAD_LIB} ${LIBM} ${LIBSNAPPY} ${LIBLDB} ${LIBTCM})
 set_target_properties(leveldb_bench PROPERTIES COMPILE_FLAGS "-D__LEVEL_BENCH")
 file(COPY ${CMAKE_SOURCE_DIR}/bench_config.ini DESTINATION ./)
 
@@ -88,7 +90,7 @@ add_executable(wt_bench
                utils/zipfian_random.cc
                utils/keyloader.cc
                utils/keygen.cc)
-target_link_libraries(wt_bench ${PTHREAD_LIB} ${LIBM} ${LIBSNAPPY} ${LIBWT})
+target_link_libraries(wt_bench ${LIBWT} ${PTHREAD_LIB} ${LIBM} ${LIBSNAPPY} ${LIBTCM} ${LIBDL})
 set_target_properties(wt_bench PROPERTIES COMPILE_FLAGS "-D__WT_BENCH")
 file(COPY ${CMAKE_SOURCE_DIR}/bench_config.ini DESTINATION ./)
 
@@ -104,6 +106,6 @@ add_executable(rocksdb_bench
                utils/keyloader.cc
                utils/keygen.cc)
 target_link_libraries(rocksdb_bench 
-                      ${PTHREAD_LIB} ${LIBM} ${LIBSNAPPY} ${LIBRT} ${LIBZ} ${LIBBZ2} ${LIBRDB})
+                      ${LIBRDB} ${PTHREAD_LIB} ${LIBM} ${LIBSNAPPY} ${LIBRT} ${LIBZ} ${LIBBZ2} ${LIBTCM})
 set_target_properties(rocksdb_bench PROPERTIES COMPILE_FLAGS "-D__ROCKS_BENCH")
 file(COPY ${CMAKE_SOURCE_DIR}/bench_config.ini DESTINATION ./)
