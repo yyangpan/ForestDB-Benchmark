@@ -73,6 +73,7 @@ struct bench_info {
     size_t pop_batchsize;
     uint8_t pop_commit;
     uint8_t fdb_flush_wal;
+    uint8_t pop_compaction_wait;
 
     // key generation (prefix)
     size_t nlevel;
@@ -1545,18 +1546,26 @@ void do_bench(struct bench_info *binfo)
 
 #if  defined(__PRINT_IOSTAT) && \
     (defined(__LEVEL_BENCH) || defined(__ROCKS_BENCH))
-        // Linux + (LevelDB or RocksDB): wait for background compaction
-        gap = stopwatch_stop(&sw);
-        LOG_PRINT_TIME(gap, " sec elapsed\n");
-        print_proc_io_stat(cmd, 1);
-        _wait_leveldb_compaction(binfo, db);
+        if (binfo->pop_compaction_wait) {
+          // Linux + (LevelDB or RocksDB): wait for background compaction
+          gap = stopwatch_stop(&sw);
+          LOG_PRINT_TIME(gap, " sec elapsed\n");
+          print_proc_io_stat(cmd, 1);
+          _wait_leveldb_compaction(binfo, db);
+        }
 #endif // __PRINT_IOSTAT && (__LEVEL_BENCH || __ROCKS_BENCH)
 
         if (binfo->sync_write) {
+            struct stopwatch sw_flush;
+            struct timeval gap_flush;
+            stopwatch_init(&sw_flush);
             lprintf("flushing disk buffer.. "); fflush(stdout);
             sprintf(cmd, "sync");
+            stopwatch_start(&sw_flush);
             ret = system(cmd);
-            lprintf("done\n"); fflush(stdout);
+            gap_flush = stopwatch_stop(&sw_flush);
+            LOG_PRINT_TIME(gap_flush, " sec elapsed during sync\n");
+            fflush(stdout);
         }
 
         written_final = written_init = print_proc_io_stat(cmd, 1);
@@ -2231,6 +2240,8 @@ void _print_benchinfo(struct bench_info *binfo)
     if (binfo->bloom_bpk) {
         lprintf("bloom filter enabled (%d bits per key)\n", (int)binfo->bloom_bpk);
     }
+    lprintf("Wait for compaction IO to stop after loading: %d\n",
+            (int) binfo->pop_compaction_wait);
 #endif // __LEVEL_BENCH || __ROCKS_BENCH
 
 #if defined(__ROCKS_BENCH)
@@ -2529,6 +2540,9 @@ struct bench_info get_benchinfo(const char* ini_file)
                                    (char*)"no");
     if (str[0] == 'n' /*|| binfo.nthreads == 1*/) binfo.fdb_flush_wal = 0;
     else binfo.fdb_flush_wal = 1;
+
+    binfo.pop_compaction_wait =
+        iniparser_getint(cfg, (char*)"population:compaction_wait", 0);
 
     // key length
     str = iniparser_getstring(cfg, (char*)"key_length:distribution",
