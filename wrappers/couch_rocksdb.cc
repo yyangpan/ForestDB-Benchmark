@@ -100,6 +100,18 @@ couchstore_error_t couchstore_open_db_ex(const char *filename,
     ppdb->options->target_file_size_base = 1024 * 1024 * 32;
     ppdb->options->level_compaction_dynamic_level_bytes = 1;
     ppdb->options->stats_dump_period_sec = 60;
+    ppdb->options->hard_rate_limit = 3.0;
+    ppdb->options->soft_rate_limit = 2.5;
+
+    if (ppdb->options->compression != rocksdb::kNoCompression) {
+        ppdb->options->compression_per_level.resize(ppdb->options->num_levels);
+        for (int i = 0; i < ppdb->options->num_levels; ++i) {
+            if (i <= 2)
+                ppdb->options->compression_per_level[i] = rocksdb::kNoCompression;
+            else
+                ppdb->options->compression_per_level[i] = ppdb->options->compression;
+        }
+    }
 
     if (optimize_for_load)
       ppdb->options->memtable_factory.reset(new rocksdb::VectorRepFactory);
