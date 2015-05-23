@@ -2186,6 +2186,7 @@ void _print_benchinfo(struct bench_info *binfo)
     char tempstr[256];
 
     lprintf("\n === benchmark configuration ===\n");
+    lprintf("Load database: %d\n", (int) binfo->initialize);
     lprintf("DB module: %s\n", binfo->dbname);
 
     lprintf("random seed: %d\n", (int)rnd_seed);
@@ -2542,6 +2543,8 @@ struct bench_info get_benchinfo(const char* ini_file)
     binfo.pop_compaction_wait =
         iniparser_getint(cfg, (char*)"population:compaction_wait", 0);
 
+    binfo.initialize = iniparser_getint(cfg, (char*)"population:load", 1);
+
     // key length
     str = iniparser_getstring(cfg, (char*)"key_length:distribution",
                                    (char*)"normal");
@@ -2745,7 +2748,7 @@ int main(int argc, char **argv){
     randomize();
     rnd_seed = rand();
 
-    binfo = get_benchinfo(argc >= 2 ? argv[1] : (const char*) 0);
+    binfo = get_benchinfo(argc >= 2 ? argv[argc-1] : (const char*) 0);
 
     if (strcmp(binfo.log_filename, "")){
         int ret;
@@ -2767,15 +2770,6 @@ int main(int argc, char **argv){
                 binfo.log_filename, (int)gap.tv_sec,
                 binfo.dbname);
         log_fp = fopen(filename, "w");
-    }
-
-    binfo.initialize = 1;
-    if (argc > 1) {
-        if (!memcmp((void *)argv[1], (void*)"--e", 3) ||
-            !memcmp((void *)argv[1], (void*)"-e", 2)) {
-            // use existing DB file
-            binfo.initialize = 0;
-        }
     }
 
     _print_benchinfo(&binfo);
