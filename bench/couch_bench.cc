@@ -2385,10 +2385,10 @@ void _set_keyloader(struct bench_info *binfo)
     binfo->avg_keylen = keyloader_get_avg_keylen(&binfo->kl);
 }
 
-struct bench_info get_benchinfo()
+struct bench_info get_benchinfo(const char* ini_file)
 {
     static dictionary *cfg;
-    cfg = iniparser_new((char*)"./bench_config.ini");
+    cfg = iniparser_new(ini_file ? (char*) ini_file : (char*)"./bench_config.ini");
 
     struct bench_info binfo;
     char *str;
@@ -2733,7 +2733,7 @@ int main(int argc, char **argv){
     randomize();
     rnd_seed = rand();
 
-    binfo = get_benchinfo();
+    binfo = get_benchinfo(argc >= 2 ? argv[1] : (const char*) 0);
 
     if (strcmp(binfo.log_filename, "")){
         int ret;
