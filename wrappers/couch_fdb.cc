@@ -63,6 +63,16 @@ couchstore_error_t couchstore_set_compression(int opt) {
     return COUCHSTORE_SUCCESS;
 }
 
+couchstore_error_t couchstore_optimize_for_load(int opt) {
+    // TODO - what is needed
+    return COUCHSTORE_SUCCESS;
+}
+
+couchstore_error_t couchstore_set_wal(Db *db, int use_wal) {
+    // TODO - what is needed
+    return COUCHSTORE_SUCCESS;
+}
+
 void logCallbackFunc(int err_code,
                      const char *err_msg,
                      void *pCtxData) {

@@ -10,6 +10,7 @@
 #include "rocksdb/table.h"
 #include "rocksdb/filter_policy.h"
 #include "rocksdb/table.h"
+#include "rocksdb/memtablerep.h"
 #include "couch_db.h"
 
 #define METABUF_MAXLEN (256)
@@ -27,6 +28,7 @@ static uint64_t wbs_size = 4*1024*1024;
 static int bloom_bits_per_key = 0;
 static int compaction_style = 0;
 static int compression = 0;
+static int optimize_for_load = 0;
 
 couchstore_error_t couchstore_set_cache(uint64_t size)
 {
@@ -50,6 +52,15 @@ couchstore_error_t couchstore_set_compression(int opt) {
     return COUCHSTORE_SUCCESS;
 }
 
+couchstore_error_t couchstore_optimize_for_load(int opt) {
+    optimize_for_load = opt;
+    return COUCHSTORE_SUCCESS;
+}
+
+couchstore_error_t couchstore_set_wal(Db *db, int use_wal) {
+    db->write_options->disableWAL = !use_wal;
+    return COUCHSTORE_SUCCESS;
+}
 
 LIBCOUCHSTORE_API
 couchstore_error_t couchstore_open_db(const char *filename,
@@ -85,6 +96,16 @@ couchstore_error_t couchstore_open_db_ex(const char *filename,
     ppdb->options->write_buffer_size = wbs_size;
     ppdb->options->compaction_style = rocksdb::CompactionStyle(compaction_style);
 
+    ppdb->options->max_bytes_for_level_base = 1024 * 1024 * 512;
+    ppdb->options->target_file_size_base = 1024 * 1024 * 32;
+    ppdb->options->level_compaction_dynamic_level_bytes = 1;
+    ppdb->options->stats_dump_period_sec = 60;
+
+    if (optimize_for_load)
+      ppdb->options->memtable_factory.reset(new rocksdb::VectorRepFactory);
+    else
+      ppdb->options->memtable_factory.reset(new rocksdb::SkipListFactory);
+
     if (cache_size || bloom_bits_per_key) {
         rocksdb::BlockBasedTableOptions table_options;
         if (cache_size) {
@@ -94,10 +115,13 @@ couchstore_error_t couchstore_open_db_ex(const char *filename,
             table_options.filter_policy.reset(
                 rocksdb::NewBloomFilterPolicy(bloom_bits_per_key));
         }
+        table_options.block_size = 8192;
+        table_options.format_version = 2;
+ 
         ppdb->options->table_factory.reset(
             rocksdb::NewBlockBasedTableFactory(table_options));
     }
-    ppdb->options->max_open_files = 1000;
+    ppdb->options->max_open_files = 50000;
 
     rocksdb::Status status = rocksdb::DB::Open(
         *ppdb->options, *ppdb->filename, &ppdb->db);

@@ -1495,7 +1495,6 @@ void do_bench(struct bench_info *binfo)
     }
 #endif // __ROCKS_BENCH
 
-
     if (binfo->initialize) {
         // === initialize and populate files ========
         // erase previous db file
@@ -1511,6 +1510,8 @@ void do_bench(struct bench_info *binfo)
                 ret = system(cmd);
             }
         }
+
+        couchstore_optimize_for_load(1);
 
 #if defined(__WT_BENCH)
         // WiredTiger: open connection
@@ -1539,6 +1540,7 @@ void do_bench(struct bench_info *binfo)
                 couchstore_set_sync(db[i], 0);
             }
 #endif
+            couchstore_set_wal(db[i], 0);
         }
 
         stopwatch_start(&sw);
@@ -1581,6 +1583,8 @@ void do_bench(struct bench_info *binfo)
         gap_double = gap.tv_sec + (double)gap.tv_usec / 1000000.0;
         LOG_PRINT_TIME(gap, " sec elapsed ");
         lprintf("(%.2f ops/sec)\n", binfo->ndocs / gap_double);
+
+        couchstore_optimize_for_load(0);
 
     } else {
         // === load existing files =========

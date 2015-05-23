@@ -41,6 +41,16 @@ couchstore_error_t couchstore_set_compression(int opt) {
     return COUCHSTORE_SUCCESS;
 }
 
+couchstore_error_t couchstore_optimize_for_load(int opt) {
+    // TODO - what is needed
+    return COUCHSTORE_SUCCESS;
+}
+
+couchstore_error_t couchstore_set_wal(Db *db, int use_wal) {
+    // TODO - what is needed
+    return COUCHSTORE_SUCCESS;
+}
+
 LIBCOUCHSTORE_API
 couchstore_error_t couchstore_open_db(const char *filename,
                                       couchstore_open_flags flags,

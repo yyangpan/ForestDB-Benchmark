@@ -71,6 +71,18 @@ extern "C" {
     couchstore_error_t couchstore_disable_auto_compaction(Db *db, int cpt);
 
     /**
+     * Optimize a database for batch loads.
+     */
+    couchstore_error_t couchstore_optimize_for_load(int opt);
+
+    /**
+     * Determine whether WAL logging should be used for changes done
+     * via the DB handle. This is separate from whether WAL writes
+     * are synced.
+     */
+    couchstore_error_t couchstore_set_wal(Db *db, int use_wal);
+
+    /**
      * Close an open database and free all allocated resources.
      *
      * @param db Pointer to the database handle to free.

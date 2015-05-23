@@ -48,6 +48,16 @@ couchstore_error_t couchstore_set_compression(int opt) {
     return COUCHSTORE_SUCCESS;
 }
 
+couchstore_error_t couchstore_optimize_for_load(int opt) {
+    // TODO - what is needed
+    return COUCHSTORE_SUCCESS;
+}
+
+couchstore_error_t couchstore_set_wal(Db *db, int use_wal) {
+    // TODO - what is needed
+    return COUCHSTORE_SUCCESS;
+}
+
 #ifdef PRIu64
     #define _F64 PRIu64
 #else
