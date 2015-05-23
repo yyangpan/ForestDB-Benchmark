@@ -1575,11 +1575,9 @@ void do_bench(struct bench_info *binfo)
             couchstore_close_db(db[i]);
         }
         gap = stopwatch_stop(&sw);
-#if defined(__LEVEL_BENCH) || defined(__ROCKS_BENCH)
-#if defined(__PRINT_IOSTAT)
-        gap.tv_sec -= 3; // subtract waiting time
-#endif // __PRINT_IOSTAT
-#endif // __LEVEL_BENCH || __ROCKS_BENCH
+        // TODO consider using the actual time in _wait_leveldb_compaction
+        // but this should not be hardwired to 3 seconds
+        // gap.tv_sec -= 3;
         gap_double = gap.tv_sec + (double)gap.tv_usec / 1000000.0;
         LOG_PRINT_TIME(gap, " sec elapsed ");
         lprintf("(%.2f ops/sec)\n", binfo->ndocs / gap_double);
