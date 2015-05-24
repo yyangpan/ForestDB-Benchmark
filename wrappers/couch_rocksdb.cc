@@ -11,6 +11,7 @@
 #include "rocksdb/filter_policy.h"
 #include "rocksdb/table.h"
 #include "rocksdb/memtablerep.h"
+#include "rocksdb/statistics.h"
 #include "couch_db.h"
 
 #define METABUF_MAXLEN (256)
@@ -29,6 +30,8 @@ static int bloom_bits_per_key = 0;
 static int compaction_style = 0;
 static int compression = 0;
 static int optimize_for_load = 0;
+
+static class std::shared_ptr<rocksdb::Statistics> dbstats;
 
 couchstore_error_t couchstore_set_cache(uint64_t size)
 {
@@ -112,6 +115,9 @@ couchstore_error_t couchstore_open_db_ex(const char *filename,
                 ppdb->options->compression_per_level[i] = ppdb->options->compression;
         }
     }
+
+    dbstats = rocksdb::CreateDBStatistics();
+    ppdb->options->statistics = dbstats;
 
     if (optimize_for_load)
       ppdb->options->memtable_factory.reset(new rocksdb::VectorRepFactory);
