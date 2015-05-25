@@ -397,6 +397,7 @@ void * pop_print_time(void *voidargs)
     while (counter < binfo->ndocs) {
         spin_lock(args->lock);
         counter = *(args->counter);
+        spin_unlock(args->lock);
         if (stopwatch_check_ms(args->sw, print_term_ms)) {
             tv = stopwatch_get_curtime(args->sw_long);
             tv_i = stopwatch_get_curtime(args->sw);
@@ -429,7 +430,6 @@ void * pop_print_time(void *voidargs)
             // total amount of data written
             printf("%s) ", print_filesize_approx(bytes_written, buf));
             printf(" (-%d s)", (int)remain_sec);
-            spin_unlock(args->lock);
             fflush(stdout);
 
             if (log_fp) {
@@ -439,7 +439,6 @@ void * pop_print_time(void *voidargs)
                         iops, iops_i, (uint64_t)counter, bytes_written);
             }
         } else {
-            spin_unlock(args->lock);
             usleep(print_term_ms * 1000);
         }
     }
