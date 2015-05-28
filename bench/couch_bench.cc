@@ -88,6 +88,7 @@ struct bench_info {
     size_t nwriters;
     size_t reader_ops;
     size_t writer_ops;
+    int seed_per_thread;
 
     // benchmark details
     struct rndinfo keylen;
@@ -909,7 +910,7 @@ void * bench_thread(void *voidargs)
     write_mode_random.a = 0;
     write_mode_random.b = 256 * 256;
 
-    crc = args->rnd_seed;
+    crc = args->rnd_seed + (binfo->seed_per_thread ? args->id : 0);
     crc = MurmurHash64A(&crc, sizeof(crc), 0);
     BDR_RNG_VARS_SET(crc);
     BDR_RNG_NEXTPAIR;
@@ -2193,6 +2194,7 @@ void _print_benchinfo(struct bench_info *binfo)
     lprintf("DB module: %s\n", binfo->dbname);
 
     lprintf("random seed: %d\n", (int)rnd_seed);
+    lprintf("seed_per_thread: %d\n", binfo->seed_per_thread);
 
     if (strcmp(binfo->init_filename, binfo->filename)) {
         lprintf("initial filename: %s#\n", binfo->init_filename);
@@ -2588,6 +2590,7 @@ struct bench_info get_benchinfo(const char* ini_file)
     binfo.nwriters = iniparser_getint(cfg, (char*)"threads:writers", 0);
     binfo.reader_ops = iniparser_getint(cfg, (char*)"threads:reader_ops", 0);
     binfo.writer_ops = iniparser_getint(cfg, (char*)"threads:writer_ops", 0);
+    binfo.seed_per_thread = iniparser_getint(cfg, (char*)"threads:seed_per_thread", 1);
 
     // create keygen structure
     _set_keygen(&binfo);
