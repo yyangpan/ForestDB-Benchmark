@@ -41,10 +41,8 @@ killall iostat
 
 fi
 
-# for t in owa ows pqw rqw pq rq ; do
-# for p in 1 n ; do
-for t in owa ; do
-for p in n ; do
+for t in owa ows pqw rqw pq rq ; do
+for p in 1 n ; do
 
 ( iostat -kx 2 >& o.$engine.io.$t.$p & )
 ( vmstat 2 >& o.$engine.vm.$t.$p & )
