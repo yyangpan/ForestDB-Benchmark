@@ -26,10 +26,8 @@ rm -f ${logpath}_*
 if  [[ $doload -eq 1 ]]; then
 echo Load at $( date )
 
-iostat -kx 2 >& o.$engine.io.load &
-ipid=$!
-vmstat 2 >& o.$engine.vm.load &
-vpid=$!
+( iostat -kx 2 >& o.$engine.io.load & )
+( vmstat 2 >& o.$engine.vm.load & )
 
 ./${engine}_bench bench_config.ini.load > o.${engine}.load
 mv ${logpath}_* o.${engine}.log.load
@@ -38,18 +36,18 @@ du -hs ${dbpath}* > o.$engine.sz.load
 grep elapsed o.$engine.load | head -3
 grep elapsed o.$engine.load | head -3 > o.res
 
-kill $ipid
-kill $vpid
+killall vmstat
+killall iostat
 
 fi
 
-for t in owa ows pqw rqw pq rq ; do
-for p in 1 n ; do
+# for t in owa ows pqw rqw pq rq ; do
+# for p in 1 n ; do
+for t in owa ; do
+for p in n ; do
 
-iostat -kx 2 >& o.$engine.io.$t.$p &
-ipid=$!
-vmstat 2 >& o.$engine.vm.$t.$p &
-vpid=$!
+( iostat -kx 2 >& o.$engine.io.$t.$p & )
+( vmstat 2 >& o.$engine.vm.$t.$p & )
 
 ./${engine}_bench bench_config.ini.$t.$p > o.${engine}.$t.$p 
 mv ${logpath}_* o.${engine}.log.$t.$p
@@ -57,8 +55,8 @@ du -hs ${dbpath}* > o.$engine.sz.$t.$p
 
 echo $t $p $( grep ops\/sec\,  o.$engine.$t.$p | grep -v total ) 
 
-kill $ipid
-kill $vpid
+killall vmstat
+killall iostat
 
 done
 done
