@@ -118,8 +118,9 @@ couchstore_error_t couchstore_open_db_ex(const char *filename,
         }
     }
 
-    dbstats = rocksdb::CreateDBStatistics();
-    ppdb->options->statistics = dbstats;
+    // TODO - enable this via an option
+    // dbstats = rocksdb::CreateDBStatistics();
+    // ppdb->options->statistics = dbstats;
 
     if (optimize_for_load)
       ppdb->options->memtable_factory.reset(new rocksdb::VectorRepFactory);
@@ -156,7 +157,6 @@ couchstore_error_t couchstore_open_db_ex(const char *filename,
 couchstore_error_t couchstore_set_sync(Db *db, int sync)
 {
     db->write_options->sync = sync ? true : false;
-    db->write_options->disableWAL = sync ? false : true;
     return COUCHSTORE_SUCCESS;
 }
 
