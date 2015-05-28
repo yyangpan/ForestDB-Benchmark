@@ -33,8 +33,8 @@ echo Load at $( date )
 mv ${logpath}_* o.${engine}.log.load
 du -hs ${dbpath}* > o.$engine.sz.load
 
-grep elapsed o.$engine.load | head -3
-grep elapsed o.$engine.load | head -3 > o.res
+grep elapsed o.$engine.load | head -4
+grep elapsed o.$engine.load | head -4 > o.res
 
 killall iostat
 killall vmstat
