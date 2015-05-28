@@ -84,7 +84,7 @@ write_batchsize_lower_bound = 1
 write_batchsize_upper_bound = 1
 
 write_ratio_percent = 1000
-write_type = sync
+write_type = SYNC_VALUE
 
 [compaction]
 threshold = 50

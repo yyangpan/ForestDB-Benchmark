@@ -98,8 +98,9 @@ sed "s,READERS_VALUE,0," | \
 sed "s,ITERATORS_VALUE,0," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,0," | \
+sed "s,SYNC_VALUE,sync," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
-sed "s,DURATION_VALUE,${duration}," > bench_config.ini.ow.1
+sed "s,DURATION_VALUE,${duration}," > bench_config.ini.ows.1
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
@@ -113,8 +114,41 @@ sed "s,READERS_VALUE,0," | \
 sed "s,ITERATORS_VALUE,0," | \
 sed "s,WRITERS_VALUE,${writers}," | \
 sed "s,WRITE_RATE_VALUE,0," | \
+sed "s,SYNC_VALUE,sync," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
-sed "s,DURATION_VALUE,${duration}," > bench_config.ini.ow.n
+sed "s,DURATION_VALUE,${duration}," > bench_config.ini.ows.n
+
+cat bench_config.ini.template | \
+sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,LOG_VALUE,${loadpath}," | \
+sed "s,DB_VALUE,${dbpath}," | \
+sed "s,CACHE_VALUE,${cachemb}," | \
+sed "s,WBS_VALUE,${wbsmb}," | \
+sed "s,COMPRESSION_VALUE,${compression}," | \
+sed "s,LOAD_VALUE,0," | \
+sed "s,READERS_VALUE,0," | \
+sed "s,ITERATORS_VALUE,0," | \
+sed "s,WRITERS_VALUE,1," | \
+sed "s,WRITE_RATE_VALUE,0," | \
+sed "s,SYNC_VALUE,async," | \
+sed "s,WARMINGUP_VALUE,${warmup}," | \
+sed "s,DURATION_VALUE,${duration}," > bench_config.ini.owa.1
+
+cat bench_config.ini.template | \
+sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,LOG_VALUE,${loadpath}," | \
+sed "s,DB_VALUE,${dbpath}," | \
+sed "s,CACHE_VALUE,${cachemb}," | \
+sed "s,WBS_VALUE,${wbsmb}," | \
+sed "s,COMPRESSION_VALUE,${compression}," | \
+sed "s,LOAD_VALUE,0," | \
+sed "s,READERS_VALUE,0," | \
+sed "s,ITERATORS_VALUE,0," | \
+sed "s,WRITERS_VALUE,${writers}," | \
+sed "s,WRITE_RATE_VALUE,0," | \
+sed "s,SYNC_VALUE,async," | \
+sed "s,WARMINGUP_VALUE,${warmup}," | \
+sed "s,DURATION_VALUE,${duration}," > bench_config.ini.owa.n
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
