@@ -1499,7 +1499,7 @@ void do_bench(struct bench_info *binfo)
     if (binfo->initialize) {
         // === initialize and populate files ========
         // erase previous db file
-        lprintf("\ninitialize with period_commit=%d\n", binfo->pop_commit);
+        lprintf("\ninitialize with periodic_commit=%d\n", binfo->pop_commit);
         sprintf(cmd, "rm -rf %s* 2> errorlog.txt", binfo->filename);
         ret = system(cmd);
 
