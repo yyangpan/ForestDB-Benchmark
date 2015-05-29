@@ -9,16 +9,19 @@ run=$8
 writerate=$9
 doload=${10}
 engine=${11}
+iterbatch=${12}
 
 compression=true
 
 logpath=$logdir/log.$engine
 dbpath=$dbdir/db.$engine
 
+NUMA="numactl --interleave=all"
+
 killall iostat
 killall vmstat
 
-bash gen_config.sh $rows $logpath $dbpath $cachemb $writebufmb $compression $nthr $nthr $nthr $warm $run $writerate
+bash gen_config.sh $rows $logpath $dbpath $cachemb $writebufmb $compression $nthr $nthr $nthr $warm $run $writerate $iterbatch
 
 rm -f o.res
 rm -f ${logpath}_*
@@ -29,7 +32,7 @@ echo Load at $( date )
 ( iostat -kx 2 >& o.$engine.io.load & )
 ( vmstat 2 >& o.$engine.vm.load & )
 
-./${engine}_bench bench_config.ini.load > o.${engine}.load 2> o.${engine}.err.load
+$NUMA ./${engine}_bench bench_config.ini.load > o.${engine}.load 2> o.${engine}.err.load
 mv ${logpath}_* o.${engine}.log.load
 du -hs ${dbpath}* > o.$engine.sz.load
 
@@ -47,7 +50,7 @@ for p in 1 n ; do
 ( iostat -kx 2 >& o.$engine.io.$t.$p & )
 ( vmstat 2 >& o.$engine.vm.$t.$p & )
 
-./${engine}_bench bench_config.ini.$t.$p > o.${engine}.$t.$p 2> o.${engine}.err.$t.$p
+$NUMA ./${engine}_bench bench_config.ini.$t.$p > o.${engine}.$t.$p 2> o.${engine}.err.$t.$p
 mv ${logpath}_* o.${engine}.log.$t.$p
 du -hs ${dbpath}* > o.$engine.sz.$t.$p
 

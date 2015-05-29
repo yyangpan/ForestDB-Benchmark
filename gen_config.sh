@@ -10,6 +10,7 @@ writers=$9
 warmup=${10}
 duration=${11}
 write_rate=${12}
+iter_batch=${13}
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
@@ -21,6 +22,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,1," | \
 sed "s,READERS_VALUE,1," | \
 sed "s,ITERATORS_VALUE,0," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,0," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,WARMINGUP_VALUE,10," | \
@@ -36,6 +38,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,1," | \
 sed "s,ITERATORS_VALUE,0," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,0," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
@@ -51,6 +54,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,${readers}," | \
 sed "s,ITERATORS_VALUE,0," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,0," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
@@ -66,6 +70,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,0," | \
 sed "s,ITERATORS_VALUE,1," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,0," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
@@ -81,6 +86,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,0," | \
 sed "s,ITERATORS_VALUE,${iterators}," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,0," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
@@ -96,6 +102,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,0," | \
 sed "s,ITERATORS_VALUE,0," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,SYNC_VALUE,sync," | \
@@ -112,6 +119,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,0," | \
 sed "s,ITERATORS_VALUE,0," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,${writers}," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,SYNC_VALUE,sync," | \
@@ -128,6 +136,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,0," | \
 sed "s,ITERATORS_VALUE,0," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,SYNC_VALUE,async," | \
@@ -144,6 +153,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,0," | \
 sed "s,ITERATORS_VALUE,0," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,${writers}," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,SYNC_VALUE,async," | \
@@ -160,6 +170,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,1," | \
 sed "s,ITERATORS_VALUE,0," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,${write_rate}," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
@@ -175,6 +186,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,${readers}," | \
 sed "s,ITERATORS_VALUE,0," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,${write_rate}," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
@@ -190,6 +202,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,0," | \
 sed "s,ITERATORS_VALUE,1," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,${write_rate}," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
@@ -205,6 +218,7 @@ sed "s,COMPRESSION_VALUE,${compression}," | \
 sed "s,LOAD_VALUE,0," | \
 sed "s,READERS_VALUE,0," | \
 sed "s,ITERATORS_VALUE,${iterators}," | \
+sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,${write_rate}," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \

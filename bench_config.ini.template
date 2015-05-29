@@ -49,7 +49,7 @@ upper_bound = 12
 distribution = normal
 median = 512
 standard_deviation = 32
-compressibility = 100
+compressibility = 50
 
 [operation]
 warmingup = WARMINGUP_VALUE
@@ -73,8 +73,8 @@ read_batchsize_upper_bound = 1
 iterate_batchsize_median = 1000
 iterate_batchsize_standard_deviation = 100
 # for uniform
-iterate_batchsize_lower_bound = 10
-iterate_batchsize_upper_bound = 10
+iterate_batchsize_lower_bound = ITER_BATCH_VALUE
+iterate_batchsize_upper_bound = ITER_BATCH_VALUE
 
 # for normal
 write_batchsize_median = 16
