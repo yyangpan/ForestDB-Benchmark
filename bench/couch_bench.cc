@@ -1540,7 +1540,9 @@ void do_bench(struct bench_info *binfo)
                 couchstore_set_sync(db[i], 0);
             }
 #endif
-            couchstore_set_wal(db[i], 0);
+            if (!binfo->pop_commit) {
+              couchstore_set_wal(db[i], 0);
+            }
         }
 
         stopwatch_start(&sw);
