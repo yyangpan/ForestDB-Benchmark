@@ -945,6 +945,7 @@ void * bench_thread(void *voidargs)
                 couchstore_close_db(args->db[i]);
                 sprintf(curfile, "%s%d.%d", binfo->filename, (int)i,
                         args->compaction_no[i]);
+                // TODO should this consider sync_write to set flags?
                 couchstore_open_db(curfile, 0x0, &args->db[i]);
             }
             args->op_signal = 0;
@@ -1498,7 +1499,7 @@ void do_bench(struct bench_info *binfo)
     if (binfo->initialize) {
         // === initialize and populate files ========
         // erase previous db file
-        lprintf("\ninitialize\n");
+        lprintf("\ninitialize with period_commit=%d\n", binfo->pop_commit);
         sprintf(cmd, "rm -rf %s* 2> errorlog.txt", binfo->filename);
         ret = system(cmd);
 
@@ -1534,7 +1535,10 @@ void do_bench(struct bench_info *binfo)
                 couchstore_set_flags(0x1);
             }
 #endif
-            couchstore_open_db(curfile, COUCHSTORE_OPEN_FLAG_CREATE, &db[i]);
+            couchstore_open_db(curfile,
+                               COUCHSTORE_OPEN_FLAG_CREATE |
+                                   ((binfo->sync_write)?(0x10):(0x0)),
+                               &db[i]);
 #if defined(__LEVEL_BENCH) || defined(__ROCKS_BENCH)
             if (!binfo->pop_commit) {
                 couchstore_set_sync(db[i], 0);
