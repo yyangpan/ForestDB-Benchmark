@@ -46,7 +46,7 @@ killall vmstat
 
 fi
 
-for t in owa ows pqw rqw pq rq ; do
+for t in ows pqw rqw pq rq owa ; do
 for p in 1 n ; do
 
 ( iostat -kx 2 >& o.$engine.io.$t.$p & )
@@ -64,7 +64,7 @@ killall vmstat
 done
 done
 
-for t in owa ows pqw rqw pq rq ; do
+for t in ows owa pqw rqw pq rq ; do
 for p in 1 n ; do
 echo $t $p $( grep ops\/sec\,  o.$engine.$t.$p | grep -v total ) >> o.res
 done 
