@@ -11,6 +11,13 @@ warmup=${10}
 duration=${11}
 write_rate=${12}
 iter_batch=${13}
+periodic=${14}
+
+if [[ $periodic == "yes" ]]; then
+  load_sync=sync
+else
+  load_sync=async
+fi
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
@@ -25,8 +32,10 @@ sed "s,ITERATORS_VALUE,0," | \
 sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,0," | \
 sed "s,WRITE_RATE_VALUE,0," | \
-sed "s,WARMINGUP_VALUE,10," | \
-sed "s,DURATION_VALUE,60," > bench_config.ini.load
+sed "s,SYNC_VALUE,${load_sync}," | \
+sed "s,PERIOD_VALUE,${periodic}," | \
+sed "s,WARMINGUP_VALUE,5," | \
+sed "s,DURATION_VALUE,5," > bench_config.ini.load
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
@@ -41,6 +50,8 @@ sed "s,ITERATORS_VALUE,0," | \
 sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,0," | \
 sed "s,WRITE_RATE_VALUE,0," | \
+sed "s,SYNC_VALUE,async," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.pq.1
 
@@ -57,6 +68,8 @@ sed "s,ITERATORS_VALUE,0," | \
 sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,0," | \
 sed "s,WRITE_RATE_VALUE,0," | \
+sed "s,SYNC_VALUE,async," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.pq.n
 
@@ -73,6 +86,8 @@ sed "s,ITERATORS_VALUE,1," | \
 sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,0," | \
 sed "s,WRITE_RATE_VALUE,0," | \
+sed "s,SYNC_VALUE,async," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.rq.1
 
@@ -89,6 +104,8 @@ sed "s,ITERATORS_VALUE,${iterators}," | \
 sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,0," | \
 sed "s,WRITE_RATE_VALUE,0," | \
+sed "s,SYNC_VALUE,async," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.rq.n
 
@@ -106,6 +123,7 @@ sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,SYNC_VALUE,sync," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.ows.1
 
@@ -123,6 +141,7 @@ sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,${writers}," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,SYNC_VALUE,sync," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.ows.n
 
@@ -140,6 +159,7 @@ sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,SYNC_VALUE,async," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.owa.1
 
@@ -157,6 +177,7 @@ sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,${writers}," | \
 sed "s,WRITE_RATE_VALUE,0," | \
 sed "s,SYNC_VALUE,async," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.owa.n
 
@@ -173,6 +194,8 @@ sed "s,ITERATORS_VALUE,0," | \
 sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,${write_rate}," | \
+sed "s,SYNC_VALUE,async," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.pqw.1
 
@@ -189,6 +212,8 @@ sed "s,ITERATORS_VALUE,0," | \
 sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,${write_rate}," | \
+sed "s,SYNC_VALUE,async," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.pqw.n
 
@@ -205,6 +230,8 @@ sed "s,ITERATORS_VALUE,1," | \
 sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,${write_rate}," | \
+sed "s,SYNC_VALUE,async," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.rqw.1
 
@@ -221,5 +248,7 @@ sed "s,ITERATORS_VALUE,${iterators}," | \
 sed "s,ITER_BATCH_VALUE,${iter_batch}," | \
 sed "s,WRITERS_VALUE,1," | \
 sed "s,WRITE_RATE_VALUE,${write_rate}," | \
+sed "s,SYNC_VALUE,async," | \
+sed "s,PERIOD_VALUE,no," | \
 sed "s,WARMINGUP_VALUE,${warmup}," | \
 sed "s,DURATION_VALUE,${duration}," > bench_config.ini.rqw.n

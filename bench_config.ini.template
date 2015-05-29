@@ -24,6 +24,7 @@ nthreads = 1
 batchsize = 4096
 compaction_wait = 0
 load = LOAD_VALUE
+periodic_commit = PERIOD_VALUE
 
 [threads]
 readers = READERS_VALUE
