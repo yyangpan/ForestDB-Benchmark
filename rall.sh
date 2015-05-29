@@ -11,6 +11,7 @@ doload=${10}
 engine=${11}
 iterbatch=${12}
 periodic=${13}
+nfiles=${14}
 
 compression=true
 
@@ -22,7 +23,7 @@ NUMA="numactl --interleave=all"
 killall iostat
 killall vmstat
 
-bash gen_config.sh $rows $logpath $dbpath $cachemb $writebufmb $compression $nthr $nthr $nthr $warm $run $writerate $iterbatch $periodic
+bash gen_config.sh $rows $logpath $dbpath $cachemb $writebufmb $compression $nthr $nthr $nthr $warm $run $writerate $iterbatch $periodic $nfiles
 
 rm -f o.res
 rm -f ${logpath}_*

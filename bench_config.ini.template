@@ -17,7 +17,7 @@ compression = COMPRESSION_VALUE
 
 [db_file]
 filename = DB_VALUE
-nfiles = 1
+nfiles = NFILES_VALUE
 
 [population]
 nthreads = 1

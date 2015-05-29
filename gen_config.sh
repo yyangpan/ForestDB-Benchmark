@@ -12,6 +12,7 @@ duration=${11}
 write_rate=${12}
 iter_batch=${13}
 periodic=${14}
+nfiles=${15}
 
 if [[ $periodic == "yes" ]]; then
   load_sync=sync
@@ -21,6 +22,7 @@ fi
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -39,6 +41,7 @@ sed "s,DURATION_VALUE,5," > bench_config.ini.load
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -57,6 +60,7 @@ sed "s,DURATION_VALUE,${duration}," > bench_config.ini.pq.1
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -75,6 +79,7 @@ sed "s,DURATION_VALUE,${duration}," > bench_config.ini.pq.n
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -93,6 +98,7 @@ sed "s,DURATION_VALUE,${duration}," > bench_config.ini.rq.1
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -111,6 +117,7 @@ sed "s,DURATION_VALUE,${duration}," > bench_config.ini.rq.n
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -129,6 +136,7 @@ sed "s,DURATION_VALUE,${duration}," > bench_config.ini.ows.1
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -147,6 +155,7 @@ sed "s,DURATION_VALUE,${duration}," > bench_config.ini.ows.n
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -165,6 +174,7 @@ sed "s,DURATION_VALUE,${duration}," > bench_config.ini.owa.1
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -183,6 +193,7 @@ sed "s,DURATION_VALUE,${duration}," > bench_config.ini.owa.n
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -201,6 +212,7 @@ sed "s,DURATION_VALUE,${duration}," > bench_config.ini.pqw.1
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -219,6 +231,7 @@ sed "s,DURATION_VALUE,${duration}," > bench_config.ini.pqw.n
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
@@ -237,6 +250,7 @@ sed "s,DURATION_VALUE,${duration}," > bench_config.ini.rqw.1
 
 cat bench_config.ini.template | \
 sed "s,NDOCS_VALUE,${ndocs}," | \
+sed "s,NFILES_VALUE,${nfiles}," | \
 sed "s,LOG_VALUE,${loadpath}," | \
 sed "s,DB_VALUE,${dbpath}," | \
 sed "s,CACHE_VALUE,${cachemb}," | \
