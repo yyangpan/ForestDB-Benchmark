@@ -1,0 +1,102 @@
+[document]
+ndocs = NDOCS_VALUE
+
+[log]
+filename = LOG_VALUE
+
+[db_config]
+cache_size_MB = CACHE_VALUE
+compaction_mode = auto
+#new add
+auto_compaction_threads=4
+wbs_init_MB = 256
+wbs_bench_MB = WBS_VALUE
+#new add
+bloom_bits_per_key = BLOOM_VALUE
+compaction_style =COMP_STYLE_VALUE
+fdb_wal = 4096
+wt_type = b-tree
+compression = COMPRESSION_VALUE
+
+[db_file]
+filename = DB_VALUE
+nfiles = NFILES_VALUE
+
+[population]
+#new add
+nthreads = INITIAL_THREAD_VALUE
+batchsize = 4096
+compaction_wait = 0
+load = LOAD_VALUE
+periodic_commit = PERIOD_VALUE
+
+[threads]
+readers = READERS_VALUE
+iterators = ITERATORS_VALUE
+writers = WRITERS_VALUE
+reader_ops = 0
+writer_ops = WRITE_RATE_VALUE
+seed_per_thread = 1
+
+[key_length]
+distribution = normal
+median = 32
+standard_deviation = 2
+
+[prefix]
+level = 0
+nprefixes = 100
+distribution = uniform
+lower_bound = 4
+upper_bound = 12
+
+[body_length]
+distribution = normal
+#new add
+median = BODY_VALUE
+standard_deviation = 32
+compressibility = 50
+
+[operation]
+warmingup = WARMINGUP_VALUE
+duration = DURATION_VALUE
+#nops = 1000000
+
+batch_distribution = uniform
+batch_parameter1 = 0.0
+batch_parameter2 = 8
+
+batchsize_distribution = uniform
+
+# for normal
+read_batchsize_median = 5
+read_batchsize_standard_deviation = 1
+# for uniform
+read_batchsize_lower_bound = 1
+read_batchsize_upper_bound = 1
+
+# for normal
+iterate_batchsize_median = 1000
+iterate_batchsize_standard_deviation = 100
+# for uniform
+iterate_batchsize_lower_bound = ITER_BATCH_VALUE
+iterate_batchsize_upper_bound = ITER_BATCH_VALUE
+
+# for normal
+write_batchsize_median = 16
+write_batchsize_standard_deviation = 2
+# for uniform
+write_batchsize_lower_bound = 1
+write_batchsize_upper_bound = 1
+
+write_ratio_percent = 1000
+write_type = SYNC_VALUE
+
+[compaction]
+#new add
+threshold = COMP_THRESHOLD_VALUE
+period = 15
+
+[latency_monitor]
+rate = 100
+max_samples = 1000000
